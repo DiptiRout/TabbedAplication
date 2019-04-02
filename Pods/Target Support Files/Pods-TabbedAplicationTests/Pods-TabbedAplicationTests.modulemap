@@ -1,0 +1,6 @@
+framework module Pods_TabbedAplicationTests {
+  umbrella header "Pods-TabbedAplicationTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
