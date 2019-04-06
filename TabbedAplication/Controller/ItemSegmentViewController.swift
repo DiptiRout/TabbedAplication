@@ -14,8 +14,7 @@ class ItemSegmentViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var items = [ItemDetails]()
-    let dbManager = DataBaseManager()
-    var itemsData: Results<ItemDetailsObject>!
+    var itemsData = [ItemDetailsObject]()
   
     var segmentSelection = -1
 
@@ -25,19 +24,21 @@ class ItemSegmentViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(ItemCell.self, forCellReuseIdentifier: ItemCell.CellID)
         
-        if segmentSelection == 0 {
-            itemsData = dbManager.realm.objects(ItemDetailsObject.self)
-
-        }else if segmentSelection == 1 {
-            let predicate = NSPredicate(format: "catagory CONTAINS[cd] %@", "Catagory A")
-            itemsData = dbManager.realm.objects(ItemDetailsObject.self).filter(predicate)
-            
-        }else if segmentSelection == 2 {
-            let predicate = NSPredicate(format: "catagory CONTAINS[cd] %@", "Catagory B")
-            itemsData = dbManager.realm.objects(ItemDetailsObject.self).filter(predicate)
+        guard let items = RealmManager.shared.getObjects(type: ItemDetailsObject.self)?.toArray(type: ItemDetailsObject.self) else {
+            return
         }
-        else {
-            itemsData = dbManager.realm.objects(ItemDetailsObject.self)
+        if segmentSelection == 0 {
+            itemsData = items
+        }
+        else if segmentSelection == 1 {
+            itemsData = items.filter({ (item) -> Bool in
+                item.catagory.contains("Catagory A")
+            })
+        }
+        else if segmentSelection == 2 {
+            itemsData = items.filter({ (item) -> Bool in
+                item.catagory.contains("Catagory B")
+            })
         }
     }
     

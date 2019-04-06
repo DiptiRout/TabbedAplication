@@ -67,5 +67,7 @@ extension UIView {
 }
 
 extension NSNotification.Name {
-    static let globalVariableChanged = NSNotification.Name(Bundle.main.bundleIdentifier! + ".globalVariable")
+    static let realmObjectCreated = NSNotification.Name( "realmObjectCreated")
+    static let realmObjectUpdated = NSNotification.Name( "realmObjectUpdated")
+    static let realmObjectDeleted = NSNotification.Name( "realmObjectDeleted")
 }

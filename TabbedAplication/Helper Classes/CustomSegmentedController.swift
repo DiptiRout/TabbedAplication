@@ -15,8 +15,6 @@ class CustomSegmentedController: UIControl {
     var selector: UIView!
     var selectedSegmentIndex = 0
     
-    
-    
     @IBInspectable var borderWidth: CGFloat = 0 {
         
         didSet {

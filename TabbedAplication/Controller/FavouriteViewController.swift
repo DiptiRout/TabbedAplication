@@ -12,31 +12,30 @@ import RealmSwift
 class FavouriteViewController: UIViewController {
 
     var items = [ItemDetails]()
-    var itemObject = List<ItemDetailsObject>()
-    let dbManager = DataBaseManager()
-    var itemsData: Results<ItemDetailsObject>!
+    var itemsData = [ItemDetailsObject]()
     
     private var observer: NSObjectProtocol!
-
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let predicate = NSPredicate(format: "isFavourite == YES")
-        itemsData = dbManager.realm.objects(ItemDetailsObject.self).filter(predicate)
+        guard let items = RealmManager.shared.getObjects(type: ItemDetailsObject.self)?.toArray(type: ItemDetailsObject.self) else {
+            return
+        }
+        itemsData = items.filter({ (item) -> Bool in
+            item.isFavourite == true
+        })
+        
+        self.tableView.register(ItemCell.self, forCellReuseIdentifier: "ItemCell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.tableFooterView = UIView()
-        tableView.register(ItemCell.self, forCellReuseIdentifier: "ItemCell")
-        
-        observer = NotificationCenter.default.addObserver(forName: .globalVariableChanged, object: nil, queue: .main) { [weak self] notification in
-            
+        self.observer = NotificationCenter.default.addObserver(forName: .realmObjectUpdated, object: nil, queue: .main) { [weak self] notification in
             self?.tableView.reloadData()
-            
         }
-        
+       
     }
     
     deinit {

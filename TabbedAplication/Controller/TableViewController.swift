@@ -12,20 +12,36 @@ import RealmSwift
 class TableViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    var filteredFruitList: Results<FruitObject>!
-    let dbManager = DataBaseManager()
-    var fruitData: Results<FruitObject>!
+    var filteredFruitList = [FruitObject]()
+    var fruitData = [FruitObject]()
     let searchController = UISearchController(searchResultsController: nil)
-
+    private var observer: NSObjectProtocol!
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
-        fruitData = dbManager.realm.objects(FruitObject.self)
-
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.tableFooterView = UIView()
-        
+        guard let items = RealmManager.shared.getObjects(type: FruitObject.self)?.toArray(type: FruitObject.self) else {
+            return
+        }
+        fruitData = items
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.tableFooterView = UIView()
+        self.observer = NotificationCenter.default.addObserver(forName: .realmObjectCreated, object: nil, queue: .main) { [weak self] notification in
+            
+            guard let items = RealmManager.shared.getObjects(type: FruitObject.self)?.toArray(type: FruitObject.self) else {
+                return
+            }
+            self?.fruitData = items
+            
+            self?.tableView.beginUpdates()
+            self?.tableView.insertRows(at: [IndexPath.init(row: (self?.fruitData.count ?? 0)-1, section: 0)], with: .automatic)
+            self?.tableView.endUpdates()
+        }
+   
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(observer)
     }
    
     func setupNavBar() {
@@ -39,11 +55,12 @@ class TableViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     @objc func addBarButtonTapped()  {
+        
         let name = randomString(length: 5)
-        dbManager.saveFruits(name: name)
-        self.tableView.beginUpdates()
-        self.tableView.insertRows(at: [IndexPath.init(row: fruitData.count-1, section: 0)], with: .automatic)
-        self.tableView.endUpdates()
+        RealmManager.shared.saveObjects(objs: FruitObject(name: name))
+        fruitData.append(FruitObject(name: name))
+        NotificationCenter.default.post(name: .realmObjectCreated, object: nil)
+        
     }
     
     func randomString(length: Int) -> String {
@@ -64,21 +81,22 @@ class TableViewController: UIViewController {
     }
     
     func deleteRows() {
+        
         if let selectedRows = tableView.indexPathsForSelectedRows {
-            // 1
-            var items = [String]()
+            var items = [FruitObject]()
             for indexPath in selectedRows  {
-                items.append(fruitData[indexPath.row].name)
+                items.append(fruitData[indexPath.row])
             }
-            // 2
             for item in items {
-                let predicate = NSPredicate(format: "name != %@", item)
-                fruitData = fruitData.filter(predicate)
+                RealmManager.shared.deleteObject(objs: item)
+                fruitData = fruitData.filter({ (fruit) -> Bool in
+                    !fruit.isInvalidated
+                })
             }
-            // 3
-            tableView.beginUpdates()
-            tableView.deleteRows(at: selectedRows, with: .automatic)
-            tableView.endUpdates()
+            self.tableView.beginUpdates()
+            self.tableView.deleteRows(at: selectedRows, with: .automatic)
+            self.tableView.endUpdates()
+          
         }
     }
    
@@ -128,8 +146,9 @@ extension TableViewController: UISearchResultsUpdating, UISearchControllerDelega
     }
     
     func filterTableViewForEnterText(searchText: String) {
-        let searchPredicate = NSPredicate(format: "name CONTAINS[c] %@", searchText)
-        filteredFruitList = fruitData.filter(searchPredicate)
+        filteredFruitList = fruitData.filter({ (fruit) -> Bool in
+            fruit.name.localizedCaseInsensitiveContains(searchText)
+        })
         self.tableView.reloadData()
     }
 //    func willDismissSearchController(_ searchController: UISearchController) {

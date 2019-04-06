@@ -33,7 +33,8 @@
 		DE05426D22500543001B6A4E /* FavouriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE05426C22500543001B6A4E /* FavouriteViewController.swift */; };
 		DE13D2D52250BE4E009FDAF0 /* CustomSegmentedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE13D2D42250BE4E009FDAF0 /* CustomSegmentedController.swift */; };
 		DE13D2D72250C138009FDAF0 /* ItemSegmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE13D2D62250C138009FDAF0 /* ItemSegmentViewController.swift */; };
-		DE13D2DD2250D0AB009FDAF0 /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE13D2DC2250C903009FDAF0 /* DataBaseManager.swift */; };
+		DE1CCECB22586DA2008462C6 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1CCECA22586DA2008462C6 /* RealmManager.swift */; };
+		DE1CCECD2258796D008462C6 /* RealmObjectModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1CCECC2258796D008462C6 /* RealmObjectModels.swift */; };
 		DEB4D41122513B8900A2F35D /* Swift+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB4D41022513B8900A2F35D /* Swift+Extentions.swift */; };
 		DEB4D41322513C5800A2F35D /* ViewDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB4D41222513C5800A2F35D /* ViewDetailsViewController.swift */; };
 		DEB4D4162251604700A2F35D /* ItemDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB4D4152251604700A2F35D /* ItemDetails.swift */; };
@@ -97,7 +98,8 @@
 		DE05426C22500543001B6A4E /* FavouriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteViewController.swift; sourceTree = "<group>"; };
 		DE13D2D42250BE4E009FDAF0 /* CustomSegmentedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedController.swift; sourceTree = "<group>"; };
 		DE13D2D62250C138009FDAF0 /* ItemSegmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSegmentViewController.swift; sourceTree = "<group>"; };
-		DE13D2DC2250C903009FDAF0 /* DataBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
+		DE1CCECA22586DA2008462C6 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
+		DE1CCECC2258796D008462C6 /* RealmObjectModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmObjectModels.swift; sourceTree = "<group>"; };
 		DEB4D41022513B8900A2F35D /* Swift+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Swift+Extentions.swift"; sourceTree = "<group>"; };
 		DEB4D41222513C5800A2F35D /* ViewDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDetailsViewController.swift; sourceTree = "<group>"; };
 		DEB4D4152251604700A2F35D /* ItemDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetails.swift; sourceTree = "<group>"; };
@@ -180,8 +182,9 @@
 				DE05423C224F478F001B6A4E /* UIView+Anchors.swift */,
 				DE054245224FBD03001B6A4E /* SwiftyJSON.swift */,
 				DE054240224F8B3F001B6A4E /* ImagePicker.swift */,
-				DE13D2DC2250C903009FDAF0 /* DataBaseManager.swift */,
 				DE13D2D42250BE4E009FDAF0 /* CustomSegmentedController.swift */,
+				DE1CCECA22586DA2008462C6 /* RealmManager.swift */,
+				DE1CCECC2258796D008462C6 /* RealmObjectModels.swift */,
 			);
 			path = "Helper Classes";
 			sourceTree = "<group>";
@@ -572,6 +575,7 @@
 				DE054254225002BA001B6A4E /* ItemCell.swift in Sources */,
 				DE054266225003BC001B6A4E /* FaveButton.swift in Sources */,
 				DE05424D224FC99A001B6A4E /* TableDetailsViewController.swift in Sources */,
+				DE1CCECB22586DA2008462C6 /* RealmManager.swift in Sources */,
 				DEFF751F224EA46800748ADC /* ItemsViewController.swift in Sources */,
 				DE05426D22500543001B6A4E /* FavouriteViewController.swift in Sources */,
 				DE05424F224FE332001B6A4E /* SettingsViewController.swift in Sources */,
@@ -579,7 +583,6 @@
 				DE13D2D72250C138009FDAF0 /* ItemSegmentViewController.swift in Sources */,
 				DE054244224FB987001B6A4E /* TableViewController.swift in Sources */,
 				DE05425922500317001B6A4E /* DiscardableImageCacheItem.swift in Sources */,
-				DE13D2DD2250D0AB009FDAF0 /* DataBaseManager.swift in Sources */,
 				DE05423D224F4790001B6A4E /* UIView+Anchors.swift in Sources */,
 				DE054264225003BC001B6A4E /* Spark.swift in Sources */,
 				DE054268225003BC001B6A4E /* Geometry.swift in Sources */,
@@ -598,6 +601,7 @@
 				DEFF751D224EA46800748ADC /* ProfileViewController.swift in Sources */,
 				DE054265225003BC001B6A4E /* FaveIcon.swift in Sources */,
 				DE05426B225003BC001B6A4E /* Constraints+.swift in Sources */,
+				DE1CCECD2258796D008462C6 /* RealmObjectModels.swift in Sources */,
 				DE05424B224FC086001B6A4E /* APIController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

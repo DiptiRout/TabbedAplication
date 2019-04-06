@@ -87,9 +87,13 @@ class ItemCell: UITableViewCell {
 
 extension ItemCell: FaveButtonDelegate {
     func faveButton(_ faveButton: FaveButton, didSelected selected: Bool) {
-        let db = DataBaseManager()
-        db.updateItem(isFav: selected, name: nameLabel.text ?? "") { (isSuccess) in
-            print(isSuccess)
+        let predicate = NSPredicate(format: "name == %@", nameLabel.text ?? "")
+        guard let item = RealmManager.shared.getObjects(type: ItemDetailsObject.self)?.filter(predicate).first as? ItemDetailsObject else {
+            return
         }
+        let x = ItemDetailsObject(id: item.id, name: item.name, itemDescription: item.itemDescription, catagory: item.catagory, thumbImageName: item.thumbImageName, isFavourite: selected)
+        RealmManager.shared.editObjects(objs: x)
+        NotificationCenter.default.post(name: .realmObjectUpdated, object: nil)
+
     }
 }

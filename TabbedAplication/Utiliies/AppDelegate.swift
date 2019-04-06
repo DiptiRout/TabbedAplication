@@ -13,8 +13,8 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var itemObject = List<ItemDetailsObject>()
-    let dbManager = DataBaseManager()
+    var itemObject = [ItemDetailsObject]()
+//    let dbManager = DataBaseManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -24,38 +24,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadData() {
-        let itemsData = dbManager.realm.objects(ItemDetailsObject.self)
+        guard let itemsData = RealmManager.shared.getObjects(type: ItemDetailsObject.self) else {
+            return
+        }
+        //let itemsData = dbManager.realm.objects(ItemDetailsObject.self)
+        //let newItem = ItemDetailsObject(
+       
         if itemsData.isEmpty {
-            itemObject.append(dbManager.makeNewItem("Item Name 1", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
-            itemObject.append(dbManager.makeNewItem("Item Name 2", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
-            itemObject.append(dbManager.makeNewItem("Item Name 3", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
-            itemObject.append(dbManager.makeNewItem("Item Name 4", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
-            itemObject.append(dbManager.makeNewItem("Item Name 5", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
-            itemObject.append(dbManager.makeNewItem("Item Name 6", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
+            itemObject.append(ItemDetailsObject(id: 1, name: "Item Name 1", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
+            itemObject.append(ItemDetailsObject(id: 2, name: "Item Name 2", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
+            itemObject.append(ItemDetailsObject(id: 3, name: "Item Name 3", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
+            itemObject.append(ItemDetailsObject(id: 4, name: "Item Name 4", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
+            itemObject.append(ItemDetailsObject(id: 5, name: "Item Name 5", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
+            itemObject.append(ItemDetailsObject(id: 6, name: "Item Name 6", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
+            RealmManager.shared.saveListObject(list: itemObject)
             
-            do {
-                try dbManager.saveListObject(itemObject)
-            } catch let error {
-                print(error.localizedDescription)
-            }
+//            itemObject.append(dbManager.makeNewItem("Item Name 1", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
+//            itemObject.append(dbManager.makeNewItem("Item Name 2", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
+//            itemObject.append(dbManager.makeNewItem("Item Name 3", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
+//            itemObject.append(dbManager.makeNewItem("Item Name 4", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
+//            itemObject.append(dbManager.makeNewItem("Item Name 5", itemDescription: "Item Description", catagory: "Item Catagory A", thumbImageName: "user.png", isFavourite: false))
+//            itemObject.append(dbManager.makeNewItem("Item Name 6", itemDescription: "Item Description", catagory: "Item Catagory B", thumbImageName: "user.png", isFavourite: false))
+//
+//            do {
+//                try dbManager.saveListObject(itemObject)
+//            } catch let error {
+//                print(error.localizedDescription)
+//            }
         }
     }
     
     func loadFruitNames() {
-        do {
-            let fruits = APIController.shared.readLocalJSON()
-            let _ = try fruits.map{
-                let object = try dbManager.findFruitByName(name: $0.name ?? "")
-                if object.isEmpty {
-                    dbManager.saveFruits(name: $0.name ?? "")
-                }
+        let fruits = APIController.shared.readLocalJSON()
+        let _ = fruits.map{
+            let predicate = NSPredicate(format: "name = %@", $0.name ?? "")
+            guard let object = RealmManager.shared.getObjects(type: FruitObject.self)?.filter(predicate) else {
+                return
             }
-
-        } catch let error {
-            print(error)
+            if object.isEmpty {
+                RealmManager.shared.saveObjects(objs: FruitObject(name: $0.name ?? ""))
+            }
         }
 
-        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
