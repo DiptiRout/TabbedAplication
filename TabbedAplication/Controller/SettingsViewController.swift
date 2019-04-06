@@ -30,8 +30,6 @@ class SettingsViewController: UITableViewController {
         super.viewDidLoad()
         setDatePicker()
         UserDefaults.standard.set(tempUnit.text ?? "Celcius", forKey: "TempUnit")
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(sender:)))
-        view.addGestureRecognizer(tapGesture)
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -41,7 +39,7 @@ class SettingsViewController: UITableViewController {
         settingData = SettingData(tempUnit: tempUnitValue, sound: "\(soundSwitch.isOn)".capitalized, notification: "\(notificationSwitch.isOn)".capitalized, probationDateEnd: probationEndTF.placeholder ?? "01/01/2019")
         tempUnit.text = tempUnitValue
     }
-   
+    
     @IBAction func soundState(_ sender: UISwitch) {
         settingData.sound = "\(sender.isOn)".capitalized
     }
@@ -51,8 +49,15 @@ class SettingsViewController: UITableViewController {
     
 
     // MARK: - Table view data source
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .clear
+        cell.selectedBackgroundView = backgroundView
+    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         let storyboard = UIStoryboard(name: "TabbedMain", bundle: nil)
         if indexPath.section == 0 && indexPath.row == 0 {
             let destination = storyboard.instantiateViewController(withIdentifier: "TemperatureVC") as! TemperatureViewController
@@ -70,14 +75,27 @@ class SettingsViewController: UITableViewController {
         datePicker?.datePickerMode = .date
         datePicker?.addTarget(self, action: #selector(dateChanged(sender:)), for: .valueChanged)
         
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(sender:)))
-//        view.addGestureRecognizer(tapGesture)
+        let toolBar = UIToolbar()
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.isTranslucent = true
+        toolBar.tintColor = UIColor(red: 76/255, green: 217/255, blue: 100/255, alpha: 1)
+        toolBar.sizeToFit()
         
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneClick))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelClick))
+        
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+
+        probationEndTF.inputAccessoryView = toolBar
         probationEndTF.inputView = datePicker
     }
-    
-    @objc func viewTapped(sender: UIGestureRecognizer) {
-        view.endEditing(true)
+    @objc func doneClick() {
+        probationEndTF.resignFirstResponder()
+    }
+    @objc func cancelClick() {
+        probationEndTF.resignFirstResponder()
     }
     @objc func dateChanged(sender: UIDatePicker) {
         let formatter = DateFormatter()

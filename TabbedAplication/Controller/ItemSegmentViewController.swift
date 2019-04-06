@@ -22,6 +22,7 @@ class ItemSegmentViewController: UIViewController {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.tableFooterView = UIView()
         tableView.register(ItemCell.self, forCellReuseIdentifier: ItemCell.CellID)
         
         guard let items = RealmManager.shared.getObjects(type: ItemDetailsObject.self)?.toArray(type: ItemDetailsObject.self) else {
@@ -51,6 +52,11 @@ class ItemSegmentViewController: UIViewController {
 }
 
 extension ItemSegmentViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .clear
+        cell.selectedBackgroundView = backgroundView
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemsData.count
     }

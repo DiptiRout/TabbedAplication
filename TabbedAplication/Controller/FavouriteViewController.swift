@@ -49,6 +49,11 @@ class FavouriteViewController: UIViewController {
 }
 
 extension FavouriteViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = .clear
+        cell.selectedBackgroundView = backgroundView
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemsData.count
     }
