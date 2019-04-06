@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialSnackbar
+
 
 class ProfileViewController: UITableViewController {
     
@@ -178,6 +180,9 @@ extension ProfileViewController: UITextFieldDelegate {
             emailTF.shake()
             emailTF.text = ""
             emailTF.placeholder = "Enter valid email"
+            let message = MDCSnackbarMessage()
+            message.text = "Invalid email!"
+            MDCSnackbarManager.show(message)
         }
         
         textField.resignFirstResponder()

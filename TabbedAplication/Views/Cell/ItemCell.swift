@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import MaterialComponents.MaterialSnackbar
+
 
 class ItemCell: UITableViewCell {
     static let CellID = "ItemCell"
@@ -94,6 +96,9 @@ extension ItemCell: FaveButtonDelegate {
         let x = ItemDetailsObject(id: item.id, name: item.name, itemDescription: item.itemDescription, catagory: item.catagory, thumbImageName: item.thumbImageName, isFavourite: selected)
         RealmManager.shared.editObjects(objs: x)
         NotificationCenter.default.post(name: .realmObjectUpdated, object: nil)
+        let message = MDCSnackbarMessage()
+        message.text = "Added to favourite"
+        MDCSnackbarManager.show(message)
 
     }
 }

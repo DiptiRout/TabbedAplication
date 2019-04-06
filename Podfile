@@ -7,7 +7,8 @@ target 'TabbedAplication' do
 
   # Pods for TabbedAplication
 pod 'RealmSwift'
-
+pod 'MaterialComponents/Snackbar'
+pod 'MaterialComponents/ActivityIndicator'
 
   target 'TabbedAplicationTests' do
     inherit! :search_paths

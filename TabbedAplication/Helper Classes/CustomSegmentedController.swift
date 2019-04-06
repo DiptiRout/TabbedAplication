@@ -14,6 +14,8 @@ class CustomSegmentedController: UIControl {
     var buttons = [UIButton]()
     var selector: UIView!
     var selectedSegmentIndex = 0
+    let screenSize: CGRect = UIScreen.main.bounds
+    
     
     @IBInspectable var borderWidth: CGFloat = 0 {
         
@@ -100,8 +102,9 @@ class CustomSegmentedController: UIControl {
         }
         
         buttons[0].setTitleColor(selectorTextColor, for: .normal)
-        
-        let selectorWidth = frame.width / CGFloat(buttonTitles.count)
+        let screenWidth = screenSize.width
+        //let screenHeight = screenSize.height
+        let selectorWidth = screenWidth / CGFloat(buttonTitles.count)
         
         let y =    (self.frame.maxY - self.frame.minY) - 3.0
         

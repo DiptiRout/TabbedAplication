@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialSnackbar
 
 class TableDetailsViewController: UIViewController {
 
     @IBOutlet weak var editTextField: UITextField!
     var textIn = ""
+    let message = MDCSnackbarMessage()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -32,6 +35,8 @@ class TableDetailsViewController: UIViewController {
             if isValidFruitName(newName: trimmedName, storedName: textIn) {
                 RealmManager.shared.editObjects(objs: FruitObject(key: textIn, name: trimmedName))
                 NotificationCenter.default.post(name: .realmObjectUpdated, object: nil)
+                message.text = "Successfully Updated!"
+                MDCSnackbarManager.show(message)
 
             }
         }
@@ -39,11 +44,16 @@ class TableDetailsViewController: UIViewController {
     
     func isValidFruitName(newName: String, storedName: String) -> Bool {
         if newName.count > 1 && newName != storedName {
-            print("OK")
             return true
         }
+        else if newName == storedName {
+            message.text = "Name already exist!"
+            MDCSnackbarManager.show(message)
+            return false
+        }
         else {
-            print("not OK")
+            message.text = "Invalid name!"
+            MDCSnackbarManager.show(message)
             return false
         }
     }

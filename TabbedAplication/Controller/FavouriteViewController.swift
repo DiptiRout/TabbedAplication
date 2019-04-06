@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import MaterialComponents.MaterialSnackbar
 
 class FavouriteViewController: UIViewController {
 
@@ -15,11 +16,12 @@ class FavouriteViewController: UIViewController {
     var itemsData = [ItemDetailsObject]()
     
     private var observer: NSObjectProtocol!
-    
+
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         guard let items = RealmManager.shared.getObjects(type: ItemDetailsObject.self)?.toArray(type: ItemDetailsObject.self) else {
             return
         }
@@ -55,7 +57,16 @@ extension FavouriteViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectedBackgroundView = backgroundView
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemsData.count
+        if itemsData.count == 0 {
+            let message = MDCSnackbarMessage()
+            message.text = "There are no favourite data"
+            MDCSnackbarManager.show(message)
+            return itemsData.count
+
+        }
+        else {
+            return itemsData.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
