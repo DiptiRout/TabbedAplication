@@ -20,19 +20,23 @@ class FavouriteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         guard let items = RealmManager.shared.getObjects(type: ItemDetailsObject.self)?.toArray(type: ItemDetailsObject.self) else {
             return
         }
-        itemsData = items.filter({ (item) -> Bool in
+        self.itemsData = items.filter({ (item) -> Bool in
             item.isFavourite == true
         })
-        
         self.tableView.register(ItemCell.self, forCellReuseIdentifier: "ItemCell")
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.tableFooterView = UIView()
         self.observer = NotificationCenter.default.addObserver(forName: .realmObjectUpdated, object: nil, queue: .main) { [weak self] notification in
+            guard let items = RealmManager.shared.getObjects(type: ItemDetailsObject.self)?.toArray(type: ItemDetailsObject.self) else {
+                return
+            }
+            self?.itemsData = items.filter({ (item) -> Bool in
+                item.isFavourite == true
+            })
             self?.tableView.reloadData()
         }
        

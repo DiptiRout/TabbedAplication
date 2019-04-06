@@ -33,10 +33,16 @@ class ItemDetailsObject: Object {
 }
 
 class FruitObject: Object {
+    @objc dynamic var key = ""
     @objc dynamic var name: String = ""
-    
-    convenience init(name: String) {
+
+    convenience init(key: String, name: String) {
         self.init()
+        self.key = key
         self.name = name
+    }
+    
+    override static func primaryKey() -> String? {
+        return "key"
     }
 }

@@ -18,7 +18,7 @@ class ProfileViewController: UITableViewController {
         button.setTitle("User's Avatar", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = UIColor.lightGray
-        button.titleLabel?.font =  UIFont.systemFont(ofSize: 15)
+        button.titleLabel?.font =  UIFont.systemFont(ofSize: 16)
         return button
     }()
     

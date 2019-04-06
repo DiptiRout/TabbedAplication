@@ -55,12 +55,12 @@ class ViewDetailsViewController: UITableViewController {
             let months = date2.months(from: date1)
             let days = date2.days(from: date1) - (months * 30)
             
-            if days > 0 {
+            if months >= 6 {
 
-                return ("\(months) months \(days) days" , "More than \(months) months")
+                return ("\(months) months \(days) days" , "More than 6 months")
             }
             else {
-                return ("\(months) months \(days) days" , "\(months) months")
+                return ("\(months) months \(days) days" , "Less than 6 months")
             }
             
         }

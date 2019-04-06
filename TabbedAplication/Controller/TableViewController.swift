@@ -38,6 +38,10 @@ class TableViewController: UIViewController {
             self?.tableView.insertRows(at: [IndexPath.init(row: (self?.fruitData.count ?? 0)-1, section: 0)], with: .automatic)
             self?.tableView.endUpdates()
         }
+        self.observer = NotificationCenter.default.addObserver(forName: .realmObjectUpdated, object: nil, queue: .main) { [weak self] notification in
+            
+            self?.tableView.reloadData()
+        }
    
     }
     deinit {
@@ -57,8 +61,8 @@ class TableViewController: UIViewController {
     @objc func addBarButtonTapped()  {
         
         let name = randomString(length: 5)
-        RealmManager.shared.saveObjects(objs: FruitObject(name: name))
-        fruitData.append(FruitObject(name: name))
+        RealmManager.shared.saveObjects(objs: FruitObject(key: name, name: name))
+        //fruitData.append(FruitObject(name: name))
         NotificationCenter.default.post(name: .realmObjectCreated, object: nil)
         
     }
@@ -72,9 +76,12 @@ class TableViewController: UIViewController {
         if(self.isEditing) {
             tableView.allowsMultipleSelectionDuringEditing = true
             editButtonItem.title = "Delete"
+            self.navigationItem.title = "0 Selected"
+
         }
         else {
             editButtonItem.title = "Edit"
+            self.navigationItem.title = "Table"
             deleteRows()
         }
         self.tableView.isEditing = !self.tableView.isEditing
@@ -123,7 +130,9 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         searchController.dismiss(animated: true, completion: nil)
         if tableView.isEditing {
-            
+            if let selectedRows = tableView.indexPathsForSelectedRows {
+                self.navigationItem.title = "\(selectedRows.count) Selected"
+            }
         }
         else {
             let storyboard = UIStoryboard(name: "TabbedMain", bundle: nil)
@@ -135,6 +144,16 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
                 destination.textIn = fruitData[indexPath.row].name
             }
             navigationController?.pushViewController(destination, animated: false)
+        }
+    }
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView.isEditing {
+            if let selectedRows = tableView.indexPathsForSelectedRows {
+                self.navigationItem.title = "\(selectedRows.count) Selected"
+            }
+            else{
+                self.navigationItem.title = "0 Selected"
+            }
         }
     }
 }

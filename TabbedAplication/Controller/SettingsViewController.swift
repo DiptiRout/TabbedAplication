@@ -30,6 +30,8 @@ class SettingsViewController: UITableViewController {
         super.viewDidLoad()
         setDatePicker()
         UserDefaults.standard.set(tempUnit.text ?? "Celcius", forKey: "TempUnit")
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped(sender:)))
+        view.addGestureRecognizer(tapGesture)
         
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -39,6 +41,7 @@ class SettingsViewController: UITableViewController {
         settingData = SettingData(tempUnit: tempUnitValue, sound: "\(soundSwitch.isOn)".capitalized, notification: "\(notificationSwitch.isOn)".capitalized, probationDateEnd: probationEndTF.placeholder ?? "01/01/2019")
         tempUnit.text = tempUnitValue
     }
+   
     @IBAction func soundState(_ sender: UISwitch) {
         settingData.sound = "\(sender.isOn)".capitalized
     }
@@ -74,7 +77,7 @@ class SettingsViewController: UITableViewController {
     }
     
     @objc func viewTapped(sender: UIGestureRecognizer) {
-        //view.endEditing(true)
+        view.endEditing(true)
     }
     @objc func dateChanged(sender: UIDatePicker) {
         let formatter = DateFormatter()
