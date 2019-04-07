@@ -51,9 +51,7 @@ class SettingsViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .clear
-        cell.selectedBackgroundView = backgroundView
+        cell.selectionStyle = .none
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -12,6 +12,10 @@ import RealmSwift
 class TableViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    var shownIndexes : [IndexPath] = []
+    let CELL_HEIGHT : CGFloat = 40
+    
     var filteredFruitList = [FruitObject]()
     var fruitData = [FruitObject]()
     let searchController = UISearchController(searchResultsController: nil)
@@ -109,7 +113,24 @@ class TableViewController: UIViewController {
    
 }
 extension TableViewController: UITableViewDelegate, UITableViewDataSource {
-
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.selectionStyle = .none
+        if (shownIndexes.contains(indexPath) == false) {
+            shownIndexes.append(indexPath)
+            
+            cell.transform = CGAffineTransform(translationX: 0, y: CELL_HEIGHT)
+            cell.layer.shadowColor = UIColor.black.cgColor
+            cell.layer.shadowOffset = CGSize(width: 10, height: 10)
+            cell.alpha = 0
+            
+            UIView.beginAnimations("rotation", context: nil)
+            UIView.setAnimationDuration(0.5)
+            cell.transform = CGAffineTransform(translationX: 0, y: 0)
+            cell.alpha = 1
+            cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+            UIView.commitAnimations()
+        }
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.isActive {
             return filteredFruitList.count

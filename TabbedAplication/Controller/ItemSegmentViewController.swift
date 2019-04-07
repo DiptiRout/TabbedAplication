@@ -15,6 +15,8 @@ class ItemSegmentViewController: UIViewController {
     
     var items = [ItemDetails]()
     var itemsData = [ItemDetailsObject]()
+    var shownIndexes : [IndexPath] = []
+    let CELL_HEIGHT : CGFloat = 200
   
     var segmentSelection = -1
 
@@ -53,9 +55,22 @@ class ItemSegmentViewController: UIViewController {
 
 extension ItemSegmentViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .clear
-        cell.selectedBackgroundView = backgroundView
+        cell.selectionStyle = .none
+        if (shownIndexes.contains(indexPath) == false) {
+            shownIndexes.append(indexPath)
+            
+            cell.transform = CGAffineTransform(translationX: 0, y: CELL_HEIGHT)
+            cell.layer.shadowColor = UIColor.black.cgColor
+            cell.layer.shadowOffset = CGSize(width: 10, height: 10)
+            cell.alpha = 0
+            
+            UIView.beginAnimations("rotation", context: nil)
+            UIView.setAnimationDuration(0.5)
+            cell.transform = CGAffineTransform(translationX: 0, y: 0)
+            cell.alpha = 1
+            cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+            UIView.commitAnimations()
+        }
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemsData.count

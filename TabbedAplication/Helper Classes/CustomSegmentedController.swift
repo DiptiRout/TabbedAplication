@@ -189,8 +189,6 @@ class CustomSegmentedController: UIControl {
         
     }
     
-    
-    
     //    override func sendActions(for controlEvents: UIControlEvents) {
     //
     //        super.sendActions(for: controlEvents)
