@@ -101,6 +101,6 @@ class SettingsViewController: UITableViewController {
         
         probationEndTF.placeholder = formatter.string(from: sender.date)
         settingData.probationDateEnd = formatter.string(from: sender.date)
-        view.endEditing(true)
+        //view.endEditing(true)
     }
 }

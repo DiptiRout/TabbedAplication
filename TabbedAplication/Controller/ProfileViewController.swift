@@ -87,7 +87,7 @@ class ProfileViewController: UITableViewController {
         formatter.dateFormat = "dd/MM/yyyy"
         
         dateOfJoinTF.text = formatter.string(from: sender.date)
-        view.endEditing(true)
+        //view.endEditing(true)
     }
     
     private func setupUI() {

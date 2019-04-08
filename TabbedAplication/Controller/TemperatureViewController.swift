@@ -10,26 +10,38 @@ import UIKit
 
 class TemperatureViewController: UITableViewController {
 
+    let tempUnitArray = ["Farenheit", "Celcius"]
+    var indexNumber = -1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Temperature"
         self.tableView.tableFooterView = UIView()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
     }
 
     // MARK: - Table view data source
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            UserDefaults.standard.set("Farenheit", forKey: "TempUnit")
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let tempUnitValue = UserDefaults.standard.string(forKey: "TempUnit") ?? "Celcius"
+        cell.textLabel?.text = tempUnitArray[indexPath.row]
+        if cell.textLabel?.text == tempUnitValue {
+            indexNumber = indexPath.row
+            cell.accessoryType = .checkmark
         }
         else {
-            UserDefaults.standard.set("Celcius", forKey: "TempUnit")
+            cell.accessoryType = .none
         }
     }
-
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        UserDefaults.standard.set(tempUnitArray[indexPath.row], forKey: "TempUnit")
+        if indexNumber != indexPath.row {
+            let ip = IndexPath(row: indexNumber, section: 0)
+            tableView.cellForRow(at: ip as IndexPath)?.accessoryType = .none
+        }
+        tableView.cellForRow(at: indexPath as IndexPath)?.accessoryType = .checkmark
+        indexNumber = indexPath.row
+        print(indexNumber)
+    }
 }

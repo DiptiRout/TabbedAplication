@@ -277,6 +277,7 @@
 		DEB4D41422515F5D00A2F35D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				DE13D2DA2250C86F009FDAF0 /* Storyboards */,
 				DE0542522250029C001B6A4E /* Cell */,
 			);
 			path = Views;
@@ -318,7 +319,6 @@
 				DE13D2D92250C859009FDAF0 /* Controller */,
 				DEB4D41422515F5D00A2F35D /* Views */,
 				DE054247224FBD3E001B6A4E /* Model */,
-				DE13D2DA2250C86F009FDAF0 /* Storyboards */,
 				DE13D2D82250C827009FDAF0 /* Utiliies */,
 				DE05423F224F8B23001B6A4E /* Helper Classes */,
 			);

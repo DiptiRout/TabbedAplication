@@ -28,6 +28,7 @@ class TableViewController: UIViewController {
             return
         }
         fruitData = items
+        self.tableView.sectionIndexBackgroundColor = .clear
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.tableFooterView = UIView()
@@ -114,7 +115,7 @@ class TableViewController: UIViewController {
 }
 extension TableViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.selectionStyle = .none
+        
         if (shownIndexes.contains(indexPath) == false) {
             shownIndexes.append(indexPath)
             

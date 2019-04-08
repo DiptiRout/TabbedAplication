@@ -17,6 +17,8 @@ class ItemSegmentViewController: UIViewController {
     var itemsData = [ItemDetailsObject]()
     var shownIndexes : [IndexPath] = []
     let CELL_HEIGHT : CGFloat = 200
+    private var observer: NSObjectProtocol!
+
   
     var segmentSelection = -1
 
@@ -43,6 +45,16 @@ class ItemSegmentViewController: UIViewController {
                 item.catagory.contains("Catagory B")
             })
         }
+        
+        self.observer = NotificationCenter.default.addObserver(forName: .realmObjectUpdated, object: nil, queue: .main) { [weak self] notification in
+//            guard let items = RealmManager.shared.getObjects(type: ItemDetailsObject.self)?.toArray(type: ItemDetailsObject.self) else {
+//                return
+//            }
+//            self?.itemsData = items.filter({ (item) -> Bool in
+//                item.isFavourite == true
+//            })
+            self?.tableView.reloadData()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +62,9 @@ class ItemSegmentViewController: UIViewController {
         
        // tableView.reloadData()
     }
-
+    deinit {
+        NotificationCenter.default.removeObserver(observer)
+    }
 }
 
 extension ItemSegmentViewController: UITableViewDelegate, UITableViewDataSource {
